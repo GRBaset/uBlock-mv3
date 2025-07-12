@@ -1,37 +1,12 @@
-[![Badge Commits]][Commit Rate]
-[![Badge Issues]][Issues]
-[![Badge Localization]][Crowdin]
-[![Badge License]][License]
-[![Badge NPM]][NPM]
-[![Badge Mozilla]][Mozilla]
-[![Badge Chrome]][Chrome]
-[![Badge Edge]][Edge]
-
-***
-
 <h1 align="center">
 <sub>
 <img src="https://github.com/gorhill/uBlock/blob/master/src/img/ublock.svg" height="38" width="38">
 </sub>
-uBlock Origin (uBO)
+uBlock Origin (uBO) MV3 Port
 </h1>
 
-| Browser   | Install from ... | Status |
-| :-------: | ---------------- | ------ |
-| <img src="https://github.com/user-attachments/assets/b0136512-56a5-4856-8c50-4971c957a24f" alt="Get uBlock Origin for Firefox"> | <a href="https://addons.mozilla.org/addon/ublock-origin/">Firefox Add-ons</a> | [uBO works best on Firefox](https://github.com/gorhill/uBlock/wiki/uBlock-Origin-works-best-on-Firefox) |
-| <img src="https://github.com/user-attachments/assets/3a7569f8-688b-4eb1-a643-8d0fe173aefe" alt="Get uBlock Origin for Microsoft Edge"> | <a href="https://microsoftedge.microsoft.com/addons/detail/ublock-origin/odfafepnkmbhccpbejgmiehpchacaeak">Edge Add-ons</a> |
-| <img src="https://github.com/user-attachments/assets/938f080c-fe64-4e48-8b89-4bfceabb56e6" alt="Get uBlock Origin for Opera"> | <a href="https://addons.opera.com/extensions/details/ublock/">Opera Add-ons</a> |
-| <img src="https://github.com/user-attachments/assets/5463ef88-873b-4516-8514-5277664cfde7" alt="Get uBlock Origin for Chromium"> | <a href="https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm">Chrome Web Store</a> | <a href="https://github.com/uBlockOrigin/uBlock-issues/wiki/About-Google-Chrome's-%22This-extension-may-soon-no-longer-be-supported%22">About Google Chrome's "This extension may soon no longer be supported"</a><br><a href="https://developer.chrome.com/docs/extensions/develop/migrate/mv2-deprecation-timeline#aug_31st_2026_all_remaining_manifest_v2_extensions_removed_from_the_chrome_web_store">Removal from the Store</a> on August 31st, 2026. |
-| <img src="https://github.com/user-attachments/assets/2e9037c4-836d-44c1-a716-ba96e89daaff" alt="Get uBlock Origin for Thunderbird"> | <a href="https://addons.thunderbird.net/thunderbird/addon/ublock-origin/">Thunderbird Add-ons</a> | [No longer updated and stuck at 1.49.2.](https://github.com/uBlockOrigin/uBlock-issues/issues/2928) Later versions require "GitHub - Releases". |
-| <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg" height="50" alt="Get uBlock Origin through GitHub"> | <a href="https://github.com/gorhill/uBlock/releases">GitHub - Releases</a> | Stable and development versions on Firefox, Chromium MV2, and Thunderbird. Must be placed manually into web browsers; the Chromium and Thunderbird versions usually won't auto-update.
-
-<h3> Related: 
-<sub>
-<img src="https://github.com/gorhill/uBlock/blob/master/platform/mv3/extension/img/ublock.svg" height="24" width="24">
-</sub>
-<a href="https://github.com/uBlockOrigin/uBOL-home">uBlock Origin Lite</a>
-</h3>
-
+> [!NOTE]
+> I do not plan on upstreaming this port because it requires the extension to be whitelisted with a CLI flag or policy forceinstalled, which I doubt upstream will accept as a proper full MV3 port.
 
 ***
 
@@ -47,11 +22,8 @@ Ads, "unintrusive" or not, are just the visible portion of the privacy-invading 
 
 * [Documentation](#documentation)
 * [Installation](#installation)
-  * [Firefox](#firefox)
-  * [Chromium](#chromium)
-  * [Thunderbird](#thunderbird)
-  * [All Programs](#all-programs)
-  * [Enterprise Deployment](#enterprise-deployment)
+* [Issues](#issues)
+* [How it works](#how-it-works)
 * [Release History](#release-history)
 * [Translations](#translations)
 * [About](#about)
@@ -82,44 +54,20 @@ Visit the [Wiki][Wiki] for documentation.
 For support, questions, or help, visit [/r/uBlockOrigin][Reddit].
 
 ## Installation
+1. Clone and `make`
+2. Load unpacked in the extensions UI
+3. Add the commandline flag `--allowlisted-extension-id=<sideloaded_uBO_id>`.
+4. Enable "Allow User Scripts" in the extension settings
+5. Restart Chrome
 
-[Required Permissions][Permissions]
+## Issues
+1. Occasionally it tries to inject into a nonexistent frame? No idea what's going on here
+2. Probably some of the MV2 APIs haven't been polyfilled yet so random parts are broken
 
-#### Firefox
-
-[Firefox Add-ons][Mozilla]
-
-[Development Builds][Beta]
-
-uBO [works best][Works Best] on Firefox and is available for desktop and Android versions.
-
-#### Chromium
-
-[Chrome Web Store][Chrome] (Removal on 2026-08-31)
-
-[Microsoft Edge Add-ons][Edge] (Published by [Nicole Rolls][Nicole Rolls] until version 1.62. Ownership transfer at version 1.64.)
-
-[Opera Add-ons][Opera]
-
-[Development Builds][Chrome Dev]
-
-uBO should be compatible with any Chromium-based browser.
-
-#### Thunderbird
-
-[Thunderbird Add-ons][Thunderbird]
-
-In Thunderbird, uBlock Origin does not affect emails, just feeds.
-
-#### All Programs
-
-Do **NOT** use uBO with any other content blocker. uBO [performs][Performance] as well as or better than most popular blockers. Other blockers can prevent uBO's privacy or anti-blocker-defusing features from working correctly.
-
-[Manual Installation][Manual Installation]
-
-#### Enterprise Deployment
-
-[Deploying uBO][Deployment]
+## How It Works
+- `webRequestBlocking` is allowed on MV3 extensions if they are forceinstalled by policy or allowlisted via the command line
+- Polyfilling `chrome.tabs.executeScript` and `chrome.tabs.insertCSS` is trivial with `chrome.scripting` and `chrome.userScripts`
+- uBO's background page doesn't use many DOM APIs, and polyfilling them is trivial
 
 ## Release History
 
