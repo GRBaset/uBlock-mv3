@@ -1520,7 +1520,7 @@ export class AstFilterParser {
 
     indexOfNetAnchor(s) {
         const end = s.length;
-        if ( end === 0 ) { return 0; }
+        if ( end === 0 ) { return end; }
         let j = s.lastIndexOf('$');
         if ( j === -1 ) { return end; }
         let htmlFilteringRule = false;
