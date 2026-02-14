@@ -5,8 +5,7 @@
 uBlock Origin (uBO) MV3 Port
 </h1>
 
-> [!NOTE]
-> I do not plan on upstreaming this port because it requires the extension to be whitelisted with a CLI flag or policy forceinstalled, which I doubt upstream will accept as a proper full MV3 port.
+[Jump to installation](#installation)
 
 ***
 
@@ -54,6 +53,13 @@ Visit the [Wiki][Wiki] for documentation.
 For support, questions, or help, visit [/r/uBlockOrigin][Reddit].
 
 ## Installation
+Add `"blockddmmcjpfkbhanlgegpmjpfpfjka;https://ublock.r58playz.dev/update.xml"` to your ExtensionInstallForcelist policy.
+
+To do this on Linux:
+1. Create `/etc/opt/chrome/policies/managed/policy.json` or `/etc/chromium/policies/managed/policy.json`. (or some other variant depending on your chrome install)
+2. Write `{ "ExtensionInstallForcelist": ["blockddmmcjpfkbhanlgegpmjpfpfjka;https://ublock.r58playz.dev/update.xml"] }` into the file.
+
+Local build:
 1. Clone and `make`
 2. Load unpacked `dist/build/uBlock0.chromium` in the extensions UI
 3. Add the commandline flag `--allowlisted-extension-id=<sideloaded_uBO_id>`.
