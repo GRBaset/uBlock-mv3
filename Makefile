@@ -20,6 +20,7 @@ mv3-data := $(shell find ./dist/build/mv3-data -type f)
 
 mv3-edge-deps := $(wildcard platform/mv3/edge/*)
 mv3-safari-deps := $(wildcard platform/mv3/safari/*)
+version=$(shell git describe --tags)
 
 all: chromium firefox npm
 
@@ -133,11 +134,10 @@ publish-firefox:
 # Usage: make publish-dev-chromium version=?
 publish-dev-chromium:
 	node publish-extension/publish-chromium.js \
-		ghowner=gorhill \
-		ghrepo=uBlock \
+		ghowner=GRBaset \
+		ghrepo=uBlock-mv3 \
 		ghtag=$(version) \
-		ghasset=chromium \
-		storeid=cgbcahbpdhpcegmbfconppldiemgcoii \
+		ghasset=chromium.zip \
 		crxupdatepath=dist/chromium/update-dev.xml \
 		crxkeytoken=ubo_dev_key_path
 
